@@ -12,6 +12,4 @@ export default function SetupPage() {
       onOpen();
     }
   }, [isOpen, onOpen]);
-
-  return <main></main>;
 }

@@ -12,6 +12,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 
+import type { CreateStoreAPIResponse } from '@/types';
+
 const formSchema = z.object({
   name: z.string().min(1)
 });
@@ -31,9 +33,10 @@ const StoreModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      const response = await axios.post('/api/stores', values);
+      const response: CreateStoreAPIResponse = await axios.post('/api/stores', values);
+      console.log(response);
 
-      toast.success('New Store created.');
+      window.location.assign(`/${response.data.id}`);
     } catch (error) {
       toast.error('Something went wrong.');
       console.log(error);
