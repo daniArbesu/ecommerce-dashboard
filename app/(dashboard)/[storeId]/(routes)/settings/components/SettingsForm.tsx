@@ -1,6 +1,7 @@
 'use client';
 
 import AlertModal from '@/components/modals/AlertModal';
+import APIAlert from '@/components/ui/APIAlert';
 import Heading from '@/components/ui/Heading';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import useOrigin from '@/hooks/useOrigin';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Store } from '@prisma/client';
 import axios from 'axios';
@@ -38,6 +40,7 @@ const SettingsForm: React.FC<Props> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
 
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(formSchema),
@@ -118,6 +121,12 @@ const SettingsForm: React.FC<Props> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <APIAlert
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin as string}/api/${params.storeId as string}`}
+        variant="public"
+      />
     </>
   );
 };
