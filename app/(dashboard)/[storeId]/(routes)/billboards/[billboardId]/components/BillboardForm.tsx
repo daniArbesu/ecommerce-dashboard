@@ -48,7 +48,7 @@ const BillboardForm: React.FC<Props> = ({ initialData }) => {
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
+    defaultValues: initialData ?? {
       label: '',
       imageUrl: ''
     }
@@ -57,8 +57,16 @@ const BillboardForm: React.FC<Props> = ({ initialData }) => {
   const onSubmit = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeId as string}`, data);
+      if (initialData) {
+        await axios.patch(
+          `/api/${params.storeId as string}/billboards/${params.billboardId as string}`,
+          data
+        );
+      } else {
+        await axios.post(`/api/${params.storeId as string}/billboards`, data);
+      }
       router.refresh(); // refresh UI with new data
+      router.push(`/${params.storeId as string}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error('Something went wrong.');
@@ -70,12 +78,14 @@ const BillboardForm: React.FC<Props> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeId as string}`);
+      await axios.delete(
+        `/api/${params.storeId as string}/billboards/${params.billboardId as string}`
+      );
       router.refresh();
       router.push('/'); // take user to homepage
-      toast.success('Store deleted.');
+      toast.success('Billboard deleted.');
     } catch (error) {
-      toast.error('Make sure you removed all products and categories first.');
+      toast.error('Make sure you removed all categories using this billboard first.');
     } finally {
       setLoading(false);
       setOpen(false);
