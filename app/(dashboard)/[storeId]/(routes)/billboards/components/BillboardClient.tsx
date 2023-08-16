@@ -4,14 +4,23 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Plus } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
+import { Columns, type BillboardColumn } from './Columns';
+import { DataTable } from '@/components/ui/DataTable';
 
-const BillboardClient = () => {
+interface Props {
+  data: BillboardColumn[];
+}
+
+const BillboardClient: React.FC<Props> = ({ data }) => {
   const router = useRouter();
   const params = useParams();
   return (
     <>
       <div className="flex items-center justify-between">
-        <Heading title="Billboards (0)" description="Manage billboards for your store" />
+        <Heading
+          title={`Billboards (${data.length})`}
+          description="Manage billboards for your store"
+        />
         <Button
           onClick={() => {
             router.push(`/${params.storeId as string}/billboards/new`);
@@ -22,6 +31,7 @@ const BillboardClient = () => {
         </Button>
       </div>
       <Separator />
+      <DataTable columns={Columns} data={data} searchKey="label" />
     </>
   );
 };
