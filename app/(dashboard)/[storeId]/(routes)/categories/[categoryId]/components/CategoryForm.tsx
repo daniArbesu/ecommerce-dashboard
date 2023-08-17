@@ -155,7 +155,9 @@ const CategoryForm: React.FC<Props> = ({ initialData, billboards }) => {
                     </FormControl>
                     <SelectContent>
                       {billboards.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}></SelectItem>
+                        <SelectItem key={billboard.id} value={billboard.id}>
+                          {billboard.label}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
