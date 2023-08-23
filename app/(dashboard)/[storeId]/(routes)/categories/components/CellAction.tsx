@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { type BillboardColumn } from './Columns';
+import { type CategoryColumn } from './Columns';
 import { Button } from '@/components/ui/button';
 import { Copy, Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { toast } from 'sonner';
@@ -17,7 +17,7 @@ import axios from 'axios';
 import AlertModal from '@/components/modals/AlertModal';
 
 interface Props {
-  data: BillboardColumn;
+  data: CategoryColumn;
 }
 
 const CellAction: React.FC<Props> = ({ data }) => {
@@ -28,7 +28,7 @@ const CellAction: React.FC<Props> = ({ data }) => {
 
   const onCopy = (id: string) => {
     void navigator.clipboard.writeText(id);
-    toast.success('Billboard Id copied to the clipboard');
+    toast.success('Category Id copied to the clipboard');
   };
 
   const onDelete = async () => {
@@ -38,7 +38,7 @@ const CellAction: React.FC<Props> = ({ data }) => {
       router.refresh();
       toast.success('Billboard deleted.');
     } catch (error) {
-      toast.error('Make sure you removed all categories using this billboard first.');
+      toast.error('Make sure you removed all products using this category first.');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -74,7 +74,7 @@ const CellAction: React.FC<Props> = ({ data }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              router.push(`/${params.storeId as string}/billboards/${data.id}`);
+              router.push(`/${params.storeId as string}/categories/${data.id}`);
             }}
           >
             <Edit className="mr-2 w-4 h-4" />
